@@ -84,7 +84,6 @@ export function fixAntimeridianSplit(geojson) {
 export default class Ol extends Component {
   constructor(owner: unknown, args: any) {
     super(owner, args);
-    // console.log( new jsts.io.GeoJSONReader());
   }
 
   @action
@@ -106,7 +105,8 @@ export default class Ol extends Component {
     };
 
     const fixRussia = fixAntimeridianSplit(russia);
-    console.log(russia == fixRussia, fixRussia);
+    const fixCircle = fixAntimeridianSplit(circle);
+    const fixCircle2 = fixAntimeridianSplit(circle2);
 
     const vectorSource = new VectorSource({
       features: new GeoJSON().readFeatures(fixRussia, {
@@ -114,15 +114,13 @@ export default class Ol extends Component {
         featureProjection: 'EPSG:3857',
       }),
     });
-
     const vectorLayer = new VectorLayer({
       source: vectorSource,
       style: styleFunction,
     });
 
-    console.log(fixAntimeridianSplit(circle) == circle);
     const circleSource = new VectorSource({
-      features: new GeoJSON().readFeatures(fixAntimeridianSplit(circle), {
+      features: new GeoJSON().readFeatures(fixCircle, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
       }),
@@ -131,8 +129,9 @@ export default class Ol extends Component {
       source: circleSource,
       style: styleFunction,
     });
+
     const circle2Source = new VectorSource({
-      features: new GeoJSON().readFeatures(fixAntimeridianSplit(circle2), {
+      features: new GeoJSON().readFeatures(fixCircle2, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
       }),
