@@ -168,6 +168,9 @@ importers:
       ember-cli-dependency-checker:
         specifier: ^3.3.2
         version: 3.3.2(ember-cli@5.8.0(handlebars@4.7.8)(lodash@4.17.21)(underscore@1.13.6))
+      ember-cli-github-pages:
+        specifier: ^0.2.2
+        version: 0.2.2
       ember-cli-htmlbars:
         specifier: ^6.3.0
         version: 6.3.0
@@ -3510,6 +3513,10 @@ packages:
 
   ember-cli-get-component-path-option@1.0.0:
     resolution: {integrity: sha512-k47TDwcJ2zPideBCZE8sCiShSxQSpebY2BHcX2DdipMmBox5gsfyVrbKJWIHeSTTKyEUgmBIvQkqTOozEziCZA==}
+
+  ember-cli-github-pages@0.2.2:
+    resolution: {integrity: sha512-pFtruVBZ5OW1O1MiGQRQSQewW9DSBx6ZbRcbVpcpTlZqeDyWs5nyvhOm4qRFwK6m+jQPe2l52cYtf1rUAkBNxA==}
+    engines: {node: 8.* || >= 10.*}
 
   ember-cli-htmlbars@5.7.2:
     resolution: {integrity: sha512-Uj6R+3TtBV5RZoJY14oZn/sNPnc+UgmC8nb5rI4P3fR/gYoyTFIZSXiIM7zl++IpMoIrocxOrgt+mhonKphgGg==}
@@ -11769,6 +11776,11 @@ snapshots:
       - supports-color
 
   ember-cli-get-component-path-option@1.0.0: {}
+
+  ember-cli-github-pages@0.2.2:
+    dependencies:
+      ember-cli-version-checker: 2.2.0
+      rsvp: 4.8.5
 
   ember-cli-htmlbars@5.7.2:
     dependencies:
