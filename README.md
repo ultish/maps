@@ -15,6 +15,8 @@ When your view has the full polygon visible. Russia is rendered correctly, diamo
 Openlayer automatically duplicates the polygons over the antimeridian boundary
 <img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/ecd2b481-89dc-4a30-8000-8df62495ddb5">
 <img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/3e3bbb52-62af-4f18-8d58-2e015b117e32">
+X renders perfectly across the border
+<img width="1388" alt="image" src="https://github.com/ultish/maps/assets/3677031/8cd56658-33bf-415d-81e2-d76e06908b69">
 
 
 ## Leaflet
@@ -31,5 +33,7 @@ One copy per "world". Enabling `worldCopyJump:true` will copy the polygons once 
 <img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/818c8e85-a86d-4728-8b3f-38716b38e36a">
 But `worldCopyJump` can look odd like this where Russia and the diamond aren't shown on the left.
 <img width="1391" alt="image" src="https://github.com/ultish/maps/assets/3677031/bde4f20b-3ea3-420c-835d-70758d9a851a">
+Because of no real copy, the X doesn't render correctly with the parsing
+<img width="1385" alt="image" src="https://github.com/ultish/maps/assets/3677031/d3a05809-34f9-4a77-8670-a710166084a9">
 
 
