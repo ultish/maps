@@ -66,7 +66,7 @@ export default class Ol extends Component {
       return styles[feature.getGeometry().getType()];
     };
 
-    const fixRussia = geojsonFix(russia);
+    const fixRussia = geojsonFix(russia, 0.1);
     const fixCircle = geojsonFix(circle);
     const fixCircle2 = geojsonFix(circle2);
     const fixLine = geojsonFix(line);
