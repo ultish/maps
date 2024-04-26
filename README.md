@@ -29,9 +29,7 @@ Still a small bug in rendering Russia with the small island on the left side but
 
 Leaflet won't duplicate the polygons, ie you should see the right-part of the diamond on the left side of the map
 <img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/ede191d9-54d3-4301-be9b-da4f74cd4c43">
-One copy per "world". Enabling `worldCopyJump:true` will copy the polygons once you scroll to the next world view
-<img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/818c8e85-a86d-4728-8b3f-38716b38e36a">
-But `worldCopyJump` can look odd like this where Russia and the diamond aren't shown on the left.
+One copy per "world". Enabling `worldCopyJump:true` will copy the polygons once you scroll to the next world view but it can look odd like this where Russia and the diamond aren't shown on the left.
 <img width="1391" alt="image" src="https://github.com/ultish/maps/assets/3677031/bde4f20b-3ea3-420c-835d-70758d9a851a">
 Because of no real copy, the X doesn't render correctly with the parsing
 <img width="1385" alt="image" src="https://github.com/ultish/maps/assets/3677031/d3a05809-34f9-4a77-8670-a710166084a9">
