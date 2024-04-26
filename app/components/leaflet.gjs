@@ -5,8 +5,8 @@ import L from 'leaflet';
 import { action } from '@ember/object';
 import { modifier } from 'ember-modifier';
 
-import { fixAntimeridianSplit } from './ol';
-import { russia, circle, circle2 } from './russia';
+import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
+import { russia, circle, circle2, line, multiLine } from './russia';
 
 const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
@@ -41,13 +41,17 @@ export default class Leaflet extends Component {
         '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    const fixRussia = fixAntimeridianSplit(russia);
-    const fixCircle = fixAntimeridianSplit(circle);
-    const fixCircle2 = fixAntimeridianSplit(circle2);
+    const fixRussia = geojsonFix(russia);
+    const fixCircle = geojsonFix(circle);
+    const fixCircle2 = geojsonFix(circle2);
+    const fixLine = geojsonFix(line);
+    const fixMLine = geojsonFix(multiLine);
 
     L.geoJson(fixRussia).addTo(map);
     L.geoJson(fixCircle).addTo(map);
     L.geoJson(fixCircle2).addTo(map);
+    L.geoJson(fixLine).addTo(map);
+    L.geoJson(fixMLine).addTo(map);
   }
 
   <template>

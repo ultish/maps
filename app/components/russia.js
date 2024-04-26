@@ -34,6 +34,35 @@ export var circle2 = {
   },
 };
 
+export var line = {
+  type: 'Feature',
+  properties: {},
+  geometry: {
+    type: 'LineString',
+    coordinates: [
+      [140, 0],
+      [-140, 0],
+    ],
+  },
+};
+
+export var multiLine = {
+  type: 'Feature',
+  geometry: {
+    type: 'MultiLineString',
+    coordinates: [
+      [
+        [160, 45],
+        [-160, -45],
+      ],
+      [
+        [-160, 45],
+        [160, -45],
+      ],
+    ],
+  },
+};
+
 export var russia = {
   type: 'FeatureCollection',
   features: [

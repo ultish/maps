@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { modifier } from 'ember-modifier';
 // import Circle from 'ol/geom/Circle';
-import Feature from 'ol/Feature';
+// import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -13,9 +13,8 @@ import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 // import rewind from '@mapbox/geojson-rewind';
 // import jtst from 'jsts/org/locationtech/jts'
 
-import { russia, circle, circle2 } from './russia';
-
-import turf from '@turf/turf';
+import { russia, circle, circle2, line, multiLine } from './russia';
+import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
 
 const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
@@ -31,55 +30,6 @@ const didInsert = modifier(
     };
   },
 );
-
-export function fixAntimeridianSplit(geojson) {
-  // Handle FeatureCollection
-  if (geojson.type === 'FeatureCollection') {
-    return turf.featureCollection(
-      geojson.features.map((feature) => fixAntimeridianSplit(feature)),
-    );
-  }
-
-  // Ensure we are dealing with a Polygon feature
-  if (geojson.type !== 'Feature' || geojson.geometry.type !== 'Polygon') {
-    throw new Error(
-      'Input must be a GeoJSON Feature or FeatureCollection with Polygon geometry',
-    );
-  }
-
-  const polygon = geojson.geometry.coordinates[0]; // Get the exterior ring coordinates
-
-  // Check if the polygon crosses the antimeridian
-  const longitudes = polygon.map((coord) => coord[0]);
-  const crossesAntimeridian =
-    Math.max(...longitudes) - Math.min(...longitudes) > 180;
-
-  if (crossesAntimeridian) {
-    // Create a clone of the polygon to modify
-    const fixedPolygon = turf.clone(geojson);
-    const fixedCoords = fixedPolygon.geometry.coordinates[0];
-
-    // Iterate through each pair of consecutive coordinates
-    for (let i = 0; i < fixedCoords.length - 1; i++) {
-      const currentLng = fixedCoords[i][0];
-      const nextLng = fixedCoords[i + 1][0];
-
-      // Check if the segment crosses the antimeridian
-      if (Math.abs(nextLng - currentLng) > 180) {
-        // Calculate the correct longitude offset
-        const offset = nextLng > currentLng ? -360 : 360;
-
-        // Adjust the longitude of the next coordinate
-        fixedCoords[i + 1][0] += offset;
-      }
-    }
-
-    return fixedPolygon;
-  } else {
-    // No need to fix, return the original GeoJSON
-    return geojson;
-  }
-}
 
 export default class Ol extends Component {
   constructor(owner: unknown, args: any) {
@@ -98,15 +48,29 @@ export default class Ol extends Component {
           color: 'rgba(0, 0, 255, 0.1)',
         }),
       }),
+      LineString: new Style({
+        stroke: new Stroke({
+          color: 'green',
+          width: 5,
+        }),
+      }),
+      MultiLineString: new Style({
+        stroke: new Stroke({
+          color: 'red',
+          width: 5,
+        }),
+      }),
     };
 
     const styleFunction = function (feature) {
       return styles[feature.getGeometry().getType()];
     };
 
-    const fixRussia = fixAntimeridianSplit(russia);
-    const fixCircle = fixAntimeridianSplit(circle);
-    const fixCircle2 = fixAntimeridianSplit(circle2);
+    const fixRussia = geojsonFix(russia);
+    const fixCircle = geojsonFix(circle);
+    const fixCircle2 = geojsonFix(circle2);
+    const fixLine = geojsonFix(line);
+    const mfixLine = geojsonFix(multiLine);
 
     const vectorSource = new VectorSource({
       features: new GeoJSON().readFeatures(fixRussia, {
@@ -140,6 +104,29 @@ export default class Ol extends Component {
       source: circle2Source,
       style: styleFunction,
     });
+
+    const lineSource = new VectorSource({
+      features: new GeoJSON().readFeatures(fixLine, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      }),
+    });
+    const lineLayer = new VectorLayer({
+      source: lineSource,
+      style: styleFunction,
+    });
+
+    const mlineSource = new VectorSource({
+      features: new GeoJSON().readFeatures(mfixLine, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      }),
+    });
+    const mlineLayer = new VectorLayer({
+      source: mlineSource,
+      style: styleFunction,
+    });
+
     new Map({
       layers: [
         new TileLayer({
@@ -148,6 +135,8 @@ export default class Ol extends Component {
         vectorLayer,
         circleLayer,
         circle2Layer,
+        lineLayer,
+        mlineLayer,
       ],
       target: 'ol-map',
       view: new View({
