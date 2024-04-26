@@ -1,16 +1,16 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { modifier } from 'ember-modifier';
-import Circle from 'ol/geom/Circle';
-import Feature from 'ol/Feature';
+// import Circle from 'ol/geom/Circle';
+// import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+import { /*Circle as CircleStyle,*/ Fill, Stroke, Style } from 'ol/style';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 
-import rewind from '@mapbox/geojson-rewind';
+// import rewind from '@mapbox/geojson-rewind';
 // import jtst from 'jsts/org/locationtech/jts'
 
 import turf from '@turf/turf';
@@ -19,6 +19,7 @@ const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
     if (onInsert) {
       onInsert(element);
+      console.log(doSomething);
     }
 
     return () => {
@@ -16512,7 +16513,7 @@ export default class Ol extends Component {
       style: styleFunction,
     });
 
-    const map = new Map({
+    new Map({
       layers: [
         new TileLayer({
           source: new OSM(),

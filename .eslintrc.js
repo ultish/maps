@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = {
   overrides: [
     {
@@ -32,6 +33,9 @@ module.exports = {
         'plugin:ember/recommended',
         'plugin:ember/recommended-gjs',
       ],
+      rules: {
+        'no-loss-of-precision': 'off',
+      },
     },
     {
       files: ['tests/**/*.{js,ts,gjs,gts}'],

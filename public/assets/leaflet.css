@@ -1,3 +1,7 @@
+/* stylelint-disable number-max-precision */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable no-duplicate-selectors */
+
 /* required styles */
 
 .leaflet-pane,
@@ -77,7 +81,6 @@
 }
 
 .leaflet-container.leaflet-touch-drag {
-
   /* Fallback for FF which doesn't support pinch-zoom */
   touch-action: none;
   touch-action: pinch-zoom;

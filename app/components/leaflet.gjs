@@ -1,3 +1,5 @@
+/** eslint-disable no-loss-of-precision */
+
 import Component from '@glimmer/component';
 import L from 'leaflet';
 import { action } from '@ember/object';
@@ -8,6 +10,7 @@ import { fixAntimeridianSplit } from './ol';
 const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
     if (onInsert) {
+      console.log(doSomething)
       onInsert(element);
     }
 
@@ -125,6 +128,7 @@ export default class Leaflet extends Component {
       },
     }).addTo(map);
 
+    /** eslint-disable no-loss-of-precision */
     const russia = {
       type: 'FeatureCollection',
       features: [
@@ -16521,47 +16525,24 @@ export default class Leaflet extends Component {
 
     // https://raw.githubusercontent.com/zarkzork/russia-topojson/master/russia.json
 
-    //extend Leaflet to create a GeoJSON layer from a TopoJSON file
-    L.TopoJSON = L.GeoJSON.extend({
-      addData: function (data) {
-        var geojson, key;
-        if (data.type === 'Topology') {
-          for (key in data.objects) {
-            if (data.objects.hasOwnProperty(key)) {
-              geojson = topojson.feature(data, data.objects[key]);
-              L.GeoJSON.prototype.addData.call(this, geojson);
-            }
-          }
-          return this;
-        }
-        L.GeoJSON.prototype.addData.call(this, data);
-        return this;
-      },
-    });
-    L.topoJson = function (data, options) {
-      return new L.TopoJSON(data, options);
-    };
-
-    function onEachShapeFeature(feature, layer) {
-      var bounds = layer.getBounds && layer.getBounds();
-      // The precision might need to be adjusted depending on your data
-      if (bounds && Math.abs(bounds.getEast() + bounds.getWest()) < 0.1) {
-        var latlongs = layer.getLatLngs();
-        latlongs.forEach(function (shape) {
-          shape.forEach(function (cord) {
-            if (cord.lng < 0) {
-              cord.lng += 360;
-            }
-          });
-        });
-        layer.setLatLngs(latlongs);
-      }
-    }
+    // function onEachShapeFeature(feature, layer) {
+    //   var bounds = layer.getBounds && layer.getBounds();
+    //   // The precision might need to be adjusted depending on your data
+    //   if (bounds && Math.abs(bounds.getEast() + bounds.getWest()) < 0.1) {
+    //     var latlongs = layer.getLatLngs();
+    //     latlongs.forEach(function (shape) {
+    //       shape.forEach(function (cord) {
+    //         if (cord.lng < 0) {
+    //           cord.lng += 360;
+    //         }
+    //       });
+    //     });
+    //     layer.setLatLngs(latlongs);
+    //   }
+    // }
 
     const fixRussia = fixAntimeridianSplit(russia);
-    L.geoJson(fixRussia, {
-      onEachFeature: onEachShapeFeature,
-    }).addTo(map);
+    L.geoJson(fixRussia).addTo(map);
 
     // L.geoJSON(russia).addTo(map);
 
