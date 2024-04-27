@@ -27,7 +27,7 @@ import MVT from 'ol/format/MVT';
 import { russia, circle, circle2, line, multiLine } from './russia';
 import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
 
-const didInsert = modifier(
+export const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
     if (onInsert) {
       onInsert(element);

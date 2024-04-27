@@ -4,3 +4,7 @@
 #ol-map {
   height: calc(100vh - 50px);
 }
+
+#charts {
+  height: 50vh;
+}
