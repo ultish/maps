@@ -35,3 +35,7 @@ Because of no real copy, the X doesn't render correctly with the parsing
 <img width="1385" alt="image" src="https://github.com/ultish/maps/assets/3677031/d3a05809-34f9-4a77-8670-a710166084a9">
 
 
+# Chart.js
+Chart rendering using canvas instead of SVG for performance, and chart.js looks nice out of the box
+<img width="653" alt="image" src="https://github.com/ultish/maps/assets/3677031/59bcb547-f566-4af2-b7b7-a7af57b47ab1">
+
