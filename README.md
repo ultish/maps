@@ -6,7 +6,10 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 <img width="1390" alt="image" src="https://github.com/ultish/maps/assets/3677031/98ff2063-3d4a-408d-b6da-a333d5a921a5">
 
 
-### GeoJson parsing
+### GeoJson Antimeridian Cutting 
+<img width="1353" alt="image" src="https://github.com/ultish/maps/assets/3677031/781e7977-853d-4e81-bf89-4ed779b41619">
+
+#### custom geojson shifting instead of cutting
 When your view splits the polygon in half. Russia is rendered correctly, diamond is rendered correctly
 <img width="1395" alt="image" src="https://github.com/ultish/maps/assets/3677031/b35622b8-c657-46dd-b7c2-f2ef39b57f67">
 When your view has the full polygon visible. Russia is rendered correctly, diamond is rendered correctly
