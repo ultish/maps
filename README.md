@@ -7,36 +7,29 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 
 
 ### GeoJson Antimeridian Cutting 
+Cutting along antimeridian, leaves veritcal lines on 180degrees due to cutting
 <img width="1353" alt="image" src="https://github.com/ultish/maps/assets/3677031/781e7977-853d-4e81-bf89-4ed779b41619">
+Scroll to right and polys duplicate correctly
+<img width="1355" alt="image" src="https://github.com/ultish/maps/assets/3677031/40765fae-3d83-469a-aeb4-e0dc83223cb5">
 
 #### custom geojson shifting instead of cutting
-When your view splits the polygon in half. Russia is rendered correctly, diamond is rendered correctly
-<img width="1395" alt="image" src="https://github.com/ultish/maps/assets/3677031/b35622b8-c657-46dd-b7c2-f2ef39b57f67">
-When your view has the full polygon visible. Russia is rendered correctly, diamond is rendered correctly
-<img width="1391" alt="image" src="https://github.com/ultish/maps/assets/3677031/5d2f9160-7c33-4036-a7ae-3ecbc5b3c447">
+<img width="1345" alt="image" src="https://github.com/ultish/maps/assets/3677031/f6653f79-4f24-497d-8ff4-364c6ab98bb3">
+Red Cross isn't displayed, ol thinks its not within current extent?
+<img width="1349" alt="image" src="https://github.com/ultish/maps/assets/3677031/a8fd4db4-3e90-4aa7-b876-aad3df9328fd">
+Scroll to right and polys duplicate correctly
 
-Openlayer automatically duplicates the polygons over the antimeridian boundary
-<img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/ecd2b481-89dc-4a30-8000-8df62495ddb5">
-<img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/3e3bbb52-62af-4f18-8d58-2e015b117e32">
-X renders perfectly across the border
-<img width="1388" alt="image" src="https://github.com/ultish/maps/assets/3677031/8cd56658-33bf-415d-81e2-d76e06908b69">
 
 
 ## Leaflet
 ### No GeoJson parsing
 <img width="1391" alt="image" src="https://github.com/ultish/maps/assets/3677031/755bb879-2e4a-44d3-b021-ecb89788d4ce">
 
-### GeoJson parsing
-Still a small bug in rendering Russia with the small island on the left side but not on the right
-<img width="1389" alt="image" src="https://github.com/ultish/maps/assets/3677031/e449214b-8a82-4959-99f1-7688997167ed">
-
-Leaflet won't duplicate the polygons, ie you should see the right-part of the diamond on the left side of the map
-<img width="1393" alt="image" src="https://github.com/ultish/maps/assets/3677031/ede191d9-54d3-4301-be9b-da4f74cd4c43">
-One copy per "world". Enabling `worldCopyJump:true` will copy the polygons once you scroll to the next world view but it can look odd like this where Russia and the diamond aren't shown on the left.
-<img width="1391" alt="image" src="https://github.com/ultish/maps/assets/3677031/bde4f20b-3ea3-420c-835d-70758d9a851a">
-Because of no real copy, the X doesn't render correctly with the parsing
-<img width="1385" alt="image" src="https://github.com/ultish/maps/assets/3677031/d3a05809-34f9-4a77-8670-a710166084a9">
-
+### GeoJson Antimeridian Cutting 
+Looks a bit odd due to lack of duplication, scrolling left or right into next world view will copy them but you only ever see 1 copy at a time
+<img width="1356" alt="image" src="https://github.com/ultish/maps/assets/3677031/e2660bb8-2702-48a6-925f-a2d29f49d61b">
+#### custom geojson shifting instead of cutting
+everything fits on the one world view except for a bit of russia you see floating on top left corner
+<img width="1353" alt="image" src="https://github.com/ultish/maps/assets/3677031/5c0241e4-9e4b-4a30-9c10-d922eb39382c">
 
 # Chart.js
 Chart rendering using canvas instead of SVG for performance, and chart.js looks nice out of the box
