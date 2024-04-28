@@ -1,12 +1,12 @@
-export var circle = {
+export var rectangle = {
   type: 'Feature',
   geometry: {
     type: 'Polygon',
     coordinates: [
       [
         [-169.4, 15.8], // Top right corner (45°) - Approx.
-        [-198.5, 15.8], // Top left corner (135°) - Approx. (wraps to -162°)
-        [-198.5, 34.8], // Bottom left corner (225°) - Approx. (wraps to -162°)
+        [170, 15.8], // Top left corner (135°) - Approx. (wraps to -162°)
+        [170, 34.8], // Bottom left corner (225°) - Approx. (wraps to -162°)
         [-169.4, 34.8], // Bottom right corner (315°) - Approx.
         [-169.4, 15.8], // Closing the polygon
       ],
@@ -17,7 +17,7 @@ export var circle = {
   },
 };
 
-export var circle2 = {
+export var diamond = {
   type: 'Feature',
   properties: {},
   geometry: {
@@ -45,6 +45,29 @@ export var line = {
     ],
   },
 };
+export var line2 = {
+  type: 'Feature',
+  properties: {},
+  geometry: {
+    type: 'LineString',
+    coordinates: [
+      [180, 10],
+      [-90, 10],
+    ],
+  },
+};
+export var line3 = {
+  type: 'Feature',
+  properties: {},
+  geometry: {
+    type: 'LineString',
+    coordinates: [
+      [-60, 20],
+      [0, 20], // this is needed to force a long line instead of short
+      [180, 20],
+    ],
+  },
+};
 
 export var multiLine = {
   type: 'Feature',
@@ -56,8 +79,8 @@ export var multiLine = {
         [-160, -45],
       ],
       [
-        [-160, 45],
         [160, -45],
+        [-160, 45],
       ],
     ],
   },

@@ -6,7 +6,16 @@ import { action } from '@ember/object';
 import { modifier } from 'ember-modifier';
 
 import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
-import { russia, circle, circle2, line, multiLine } from './russia';
+import splitGeoJSON from 'geojson-antimeridian-cut';
+import {
+  russia,
+  rectangle,
+  diamond,
+  line,
+  line2,
+  line3,
+  multiLine,
+} from './russia';
 
 const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
@@ -41,16 +50,20 @@ export default class Leaflet extends Component {
         '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    const fixRussia = geojsonFix(russia);
-    const fixCircle = geojsonFix(circle);
-    const fixCircle2 = geojsonFix(circle2);
-    const fixLine = geojsonFix(line);
-    const fixMLine = geojsonFix(multiLine);
+    const fixRussia = splitGeoJSON(russia);
+    const fixRectangle = splitGeoJSON(rectangle);
+    const fixDiamond = splitGeoJSON(diamond);
+    const fixLine = splitGeoJSON(line);
+    const fixMLine = splitGeoJSON(multiLine);
+    const fixLine2 = splitGeoJSON(line2);
+    const fixLine3 = splitGeoJSON(line3);
 
     L.geoJson(fixRussia).addTo(map);
-    L.geoJson(fixCircle).addTo(map);
-    L.geoJson(fixCircle2).addTo(map);
+    L.geoJson(fixRectangle).addTo(map);
+    L.geoJson(fixDiamond).addTo(map);
     L.geoJson(fixLine).addTo(map);
+    L.geoJson(fixLine2).addTo(map);
+    L.geoJson(fixLine3).addTo(map);
     L.geoJson(fixMLine).addTo(map);
   }
 

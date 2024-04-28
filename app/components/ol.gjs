@@ -24,8 +24,20 @@ import MVT from 'ol/format/MVT';
 // import rewind from '@mapbox/geojson-rewind';
 // import jtst from 'jsts/org/locationtech/jts'
 
-import { russia, circle, circle2, line, multiLine } from './russia';
+import { world } from './countries';
+
+import {
+  russia,
+  rectangle,
+  diamond,
+  line,
+  multiLine,
+  line2,
+  line3,
+} from './russia';
 import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
+
+import splitGeoJSON from 'geojson-antimeridian-cut';
 
 export const didInsert = modifier(
   (element, [doSomething], { onInsert, onDestroy }) => {
@@ -59,6 +71,15 @@ export default class Ol extends Component {
           color: 'rgba(0, 0, 255, 0.1)',
         }),
       }),
+      MultiPolygon: new Style({
+        stroke: new Stroke({
+          color: '#3388ff',
+          width: 3,
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 0, 255, 0.1)',
+        }),
+      }),
       LineString: new Style({
         stroke: new Stroke({
           color: 'green',
@@ -77,11 +98,36 @@ export default class Ol extends Component {
       return styles[feature.getGeometry().getType()];
     };
 
-    const fixRussia = geojsonFix(russia, 0.01);
-    const fixCircle = geojsonFix(circle);
-    const fixCircle2 = geojsonFix(circle2);
-    const fixLine = geojsonFix(line);
-    const mfixLine = geojsonFix(multiLine);
+    // const fixRussia = geojsonFix(russia, 0);
+    const fixRussia = splitGeoJSON(russia);
+    const fixRectangle = splitGeoJSON(rectangle);
+    const fixDiamond = splitGeoJSON(diamond);
+    const fixLine = splitGeoJSON(line);
+    const fixLine2 = splitGeoJSON(line2);
+    const fixLine3 = splitGeoJSON(line3);
+    const mfixLine = splitGeoJSON(multiLine);
+
+    // const worldfix = geojsonFix(world);
+    // console.log(worldfix);
+
+    const worldSource = new VectorSource({
+      features: new GeoJSON().readFeatures(world, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      }),
+    });
+    const worldLayer = new VectorLayer({
+      source: worldSource,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'black',
+          width: 1,
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 0, 255, 0.1)',
+        }),
+      }),
+    });
 
     const vectorSource = new VectorSource({
       features: new GeoJSON().readFeatures(fixRussia, {
@@ -94,26 +140,42 @@ export default class Ol extends Component {
       style: styleFunction,
     });
 
-    const circleSource = new VectorSource({
-      features: new GeoJSON().readFeatures(fixCircle, {
+    const rectangleSource = new VectorSource({
+      features: new GeoJSON().readFeatures(fixRectangle, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
       }),
     });
-    const circleLayer = new VectorLayer({
-      source: circleSource,
-      style: styleFunction,
+    const rectangleLayer = new VectorLayer({
+      source: rectangleSource,
+      style: new Style({
+        stroke: new Stroke({
+          color: '#0aa26b',
+          width: 5,
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 0, 255, 0.1)',
+        }),
+      }),
     });
 
-    const circle2Source = new VectorSource({
-      features: new GeoJSON().readFeatures(fixCircle2, {
+    const diamondSource = new VectorSource({
+      features: new GeoJSON().readFeatures(fixDiamond, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
       }),
     });
-    const circle2Layer = new VectorLayer({
-      source: circle2Source,
-      style: styleFunction,
+    const diamondLayer = new VectorLayer({
+      source: diamondSource,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'black',
+          width: 1,
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 0, 255, 0.1)',
+        }),
+      }),
     });
 
     const lineSource = new VectorSource({
@@ -124,7 +186,43 @@ export default class Ol extends Component {
     });
     const lineLayer = new VectorLayer({
       source: lineSource,
-      style: styleFunction,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'grey',
+          width: 5,
+        }),
+      }),
+    });
+
+    const lineSource2 = new VectorSource({
+      features: new GeoJSON().readFeatures(fixLine2, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      }),
+    });
+    const lineLayer2 = new VectorLayer({
+      source: lineSource2,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'pink',
+          width: 5,
+        }),
+      }),
+    });
+    const lineSource3 = new VectorSource({
+      features: new GeoJSON().readFeatures(fixLine3, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      }),
+    });
+    const lineLayer3 = new VectorLayer({
+      source: lineSource3,
+      style: new Style({
+        stroke: new Stroke({
+          color: 'orange',
+          width: 5,
+        }),
+      }),
     });
 
     const mlineSource = new VectorSource({
@@ -138,52 +236,55 @@ export default class Ol extends Component {
       style: styleFunction,
     });
 
-    const style = new Style({
-      fill: new Fill({
-        color: 'rgba(255, 255, 255, 0.6)',
-      }),
-      stroke: new Stroke({
-        color: '#319FD3',
-        width: 1,
-      }),
-      text: new Text({
-        font: '12px Calibri,sans-serif',
-        fill: new Fill({
-          color: '#000',
-        }),
-        stroke: new Stroke({
-          color: '#fff',
-          width: 3,
-        }),
-      }),
-    });
+    // const style = new Style({
+    //   fill: new Fill({
+    //     color: 'rgba(255, 255, 255, 0.6)',
+    //   }),
+    //   stroke: new Stroke({
+    //     color: '#319FD3',
+    //     width: 1,
+    //   }),
+    //   text: new Text({
+    //     font: '12px Calibri,sans-serif',
+    //     fill: new Fill({
+    //       color: '#000',
+    //     }),
+    //     stroke: new Stroke({
+    //       color: '#fff',
+    //       width: 3,
+    //     }),
+    //   }),
+    // });
 
-    const vtLayer = new VectorTileLayer({
-      declutter: true,
-      source: new VectorTileSource({
-        maxZoom: 15,
-        format: new MVT(),
-        url:
-          'https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/' +
-          'ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf',
-      }),
-      style: function (feature) {
-        style.getText().setText(feature.get('name'));
-        return style;
-      },
-    });
+    // const vtLayer = new VectorTileLayer({
+    //   declutter: true,
+    //   source: new VectorTileSource({
+    //     maxZoom: 15,
+    //     format: new MVT(),
+    //     url:
+    //       'https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/' +
+    //       'ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf',
+    //   }),
+    //   style: function (feature) {
+    //     style.getText().setText(feature.get('name'));
+    //     return style;
+    //   },
+    // });
 
     new Map({
       layers: [
-        vtLayer,
+        // vtLayer,
         new TileLayer({
           source: new OSM(),
         }),
+        worldLayer,
         vectorLayer,
-        circleLayer,
-        circle2Layer,
+        rectangleLayer,
+        diamondLayer,
         lineLayer,
         mlineLayer,
+        lineLayer2,
+        lineLayer3,
       ],
       target: 'ol-map',
       view: new View({
