@@ -1,4 +1,4 @@
-# maps
+<img width="901" alt="image" src="https://github.com/ultish/maps/assets/3677031/86b08017-b2b1-42ee-85f2-3969414bd68e"># maps
 This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How does it render these polygons when it crosses the antimeridian boundary (180degrees)? How does it render geojson when you scroll around the world? What if you're clipping half way across the antimeridian?
 
 ## D3
@@ -6,10 +6,11 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 <img width="1336" alt="image" src="https://github.com/ultish/maps/assets/3677031/e872eae8-65fd-4ce7-9991-2a17fec29f91">
 D3 doesn't need any parsing :) 
 
-Border overlaps when using geojson
+Border overlaps when using geojson (thicker lines on neighbouring borders)
 <img width="995" alt="image" src="https://github.com/ultish/maps/assets/3677031/5e2805d5-6d6f-4183-8f48-b7abeffd159c">
-Convert to topojson, mesh, then back to geojson
-<img width="1337" alt="image" src="https://github.com/ultish/maps/assets/3677031/73d17e70-4ae5-4d02-93f2-5bee19a0c2ba">
+Convert to topojson, mesh, then back to geojson and it disappears. Mesh function removes overlapping lines
+<img width="901" alt="image" src="https://github.com/ultish/maps/assets/3677031/f55fb10e-3e32-4c93-952d-c2fc027fec82">
+
 
 
 ## Openlayer
