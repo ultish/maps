@@ -3,7 +3,7 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 
 ## D3
 ### No GeoJson parsing
-<img width="1336" alt="image" src="https://github.com/ultish/maps/assets/3677031/e872eae8-65fd-4ce7-9991-2a17fec29f91">
+<img width="942" alt="image" src="https://github.com/ultish/maps/assets/3677031/d4a900a3-dfe6-461e-9f68-1602857c1ab0">
 D3 doesn't need any parsing :) 
 
 Border overlaps when using geojson (thicker lines on neighbouring borders)
