@@ -1,6 +1,11 @@
 # maps
 This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How does it render these polygons when it crosses the antimeridian boundary (180degrees)? How does it render geojson when you scroll around the world? What if you're clipping half way across the antimeridian?
 
+## D3
+### No GeoJson parsing
+<img width="1336" alt="image" src="https://github.com/ultish/maps/assets/3677031/e872eae8-65fd-4ce7-9991-2a17fec29f91">
+D3 doesn't need any parsing :) 
+
 ## Openlayer
 ### No GeoJson parsing
 <img width="1390" alt="image" src="https://github.com/ultish/maps/assets/3677031/98ff2063-3d4a-408d-b6da-a333d5a921a5">
