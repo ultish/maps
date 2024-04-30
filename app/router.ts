@@ -10,4 +10,5 @@ Router.map(function () {
   this.route('leaflet');
   this.route('ol');
   this.route('d3');
+  this.route('charts');
 });

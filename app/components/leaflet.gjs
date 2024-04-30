@@ -50,13 +50,13 @@ export default class Leaflet extends Component {
         '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    const fixRussia = splitGeoJSON(russia);
-    const fixRectangle = splitGeoJSON(rectangle);
-    const fixDiamond = splitGeoJSON(diamond);
-    const fixLine = splitGeoJSON(line);
-    const fixMLine = splitGeoJSON(multiLine);
-    const fixLine2 = splitGeoJSON(line2);
-    const fixLine3 = splitGeoJSON(line3);
+    const fixRussia = geojsonFix(russia);
+    const fixRectangle = geojsonFix(rectangle);
+    const fixDiamond = geojsonFix(diamond);
+    const fixLine = geojsonFix(line);
+    const fixMLine = geojsonFix(multiLine);
+    const fixLine2 = geojsonFix(line2);
+    const fixLine3 = geojsonFix(line3);
 
     L.geoJson(fixRussia).addTo(map);
     L.geoJson(fixRectangle).addTo(map);

@@ -25,6 +25,7 @@ import MVT from 'ol/format/MVT';
 // import jtst from 'jsts/org/locationtech/jts'
 
 import { world } from './countries';
+import { world as worldMed } from './worldmedres';
 
 import {
   russia,
@@ -40,10 +41,10 @@ import { fixAntimeridianSplit3 as geojsonFix } from './geojson';
 import splitGeoJSON from 'geojson-antimeridian-cut';
 
 export const didInsert = modifier(
-  (element, [doSomething], { onInsert, onDestroy }) => {
+  // eslint-disable-next-line no-empty-pattern
+  (element, [], { onInsert, onDestroy }) => {
     if (onInsert) {
       onInsert(element);
-      console.log(doSomething);
     }
 
     return () => {
