@@ -6,6 +6,12 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 <img width="1336" alt="image" src="https://github.com/ultish/maps/assets/3677031/e872eae8-65fd-4ce7-9991-2a17fec29f91">
 D3 doesn't need any parsing :) 
 
+Border overlaps when using geojson
+<img width="995" alt="image" src="https://github.com/ultish/maps/assets/3677031/5e2805d5-6d6f-4183-8f48-b7abeffd159c">
+Convert to topojson, mesh, then back to geojson
+<img width="1337" alt="image" src="https://github.com/ultish/maps/assets/3677031/73d17e70-4ae5-4d02-93f2-5bee19a0c2ba">
+
+
 ## Openlayer
 ### No GeoJson parsing
 <img width="1390" alt="image" src="https://github.com/ultish/maps/assets/3677031/98ff2063-3d4a-408d-b6da-a333d5a921a5">
