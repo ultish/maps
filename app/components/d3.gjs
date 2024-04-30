@@ -65,6 +65,8 @@ export default class D3Test extends Component {
     render = () => {
       context.clearRect(0, 0, canvas.attr('width'), canvas.attr('height'));
 
+      context.lineWidth = 0.5;
+
       context.beginPath();
       path({ type: 'Sphere' });
       context.fillStyle = '#233ae8';
@@ -97,8 +99,10 @@ export default class D3Test extends Component {
           inertia.position[0] + (inertia.velocity[0] * inertia.t) / 10,
           inertia.position[1] + (inertia.velocity[1] * inertia.t) / 10,
         );
-        context.strokeStyle = 'red';
+        context.lineWidth = 2;
+        context.strokeStyle = '#00eeb0';
         context.stroke();
+        context.lineWidth = 0.5;
       }
 
       var p = projection.rotate().map((d) => Math.floor(10 * d) / 10);
