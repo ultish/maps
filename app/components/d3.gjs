@@ -4,6 +4,7 @@ import { didInsert } from './ol';
 import d3 from 'd3';
 import d3Inertia from 'd3-inertia';
 import turf from '@turf/turf';
+import d3Projection from 'd3-geo-projection';
 
 export default class D3Test extends Component {
   @action
@@ -15,14 +16,17 @@ export default class D3Test extends Component {
 
     const MARGIN = 5;
 
+    // const projection = d3.geoEquirectangular();
     const projection = d3.geoOrthographic();
+    console.log(d3Projection);
+    // const projection = d3Projection.geoEckert3();
     // .scale(Math.min(width, height) / 2 - MARGIN)
     // .translate([width / 2, height / 2]);
 
     console.log('inserted', d3Inertia, projection);
     console.log(projection);
 
-    const json = await d3.json('/russia.geojson');
+    const json = await d3.json('/world-low.geojson');
 
     const json2 = turf.clone(json);
     console.log(
