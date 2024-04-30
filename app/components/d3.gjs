@@ -5,6 +5,7 @@ import d3 from 'd3';
 import d3Inertia from 'd3-inertia';
 import turf from '@turf/turf';
 import d3Projection from 'd3-geo-projection';
+import * as topo from 'topojson';
 
 export default class D3Test extends Component {
   @action
@@ -24,9 +25,13 @@ export default class D3Test extends Component {
     // .translate([width / 2, height / 2]);
 
     console.log('inserted', d3Inertia, projection);
-    console.log(projection);
 
     const json = await d3.json('/world-low.geojson');
+
+    const topojson = await d3.json('/world-low.topojson');
+    const features = topo.mesh(topojson, topojson.objects['world-low']);
+
+    console.log(topojson, features);
 
     const json2 = turf.clone(json);
     console.log(
@@ -60,22 +65,25 @@ export default class D3Test extends Component {
     render = () => {
       context.clearRect(0, 0, canvas.attr('width'), canvas.attr('height'));
 
-      // context.beginPath();
-      // path({ type: 'Sphere' });
-      // context.fillStyle = 'aqua';
-      // context.fill();
+      context.beginPath();
+      path({ type: 'Sphere' });
+      context.fillStyle = '#233ae8';
+      context.fill();
 
       let graticuleGenerator = d3.geoGraticule();
 
       context.beginPath();
-      context.strokeStyle = '#ccc';
+      context.strokeStyle = '#040f5f';
       path(graticuleGenerator());
       context.stroke();
 
-      context.strokeStyle = '#333';
+      context.strokeStyle = 'white';
       context.lineWidth = 0.5;
       context.beginPath();
-      path(json);
+      // when using topojson.features
+      // path({ type: 'FeatureCollection', features: features });
+      // when using topojson.mesh
+      path(features);
       context.stroke();
 
       // draw a red line showing current inertia
