@@ -6,6 +6,7 @@ import d3Inertia from 'd3-inertia';
 import turf from '@turf/turf';
 import d3Projection from 'd3-geo-projection';
 import * as topo from 'topojson';
+import createZoomBehavior from './d3-geo-zoom';
 
 export default class D3Test extends Component {
   @action
@@ -13,25 +14,22 @@ export default class D3Test extends Component {
     // const projection = d3.geoOrthographic().scale(300).rotate([-90, -45]);
 
     const width = 800;
+
     const height = 800;
 
     const MARGIN = 5;
 
-    // const projection = d3.geoEquirectangular();
-    const projection = d3.geoOrthographic();
-    console.log(d3Projection);
+    const projection = d3.geoEquirectangular();
+    // const projection = d3.geoOrthographic();
+
     // const projection = d3Projection.geoEckert3();
     // .scale(Math.min(width, height) / 2 - MARGIN)
     // .translate([width / 2, height / 2]);
-
-    console.log('inserted', d3Inertia, projection);
 
     const json = await d3.json('/world-low.geojson');
 
     const topojson = await d3.json('/world-low.topojson');
     const features = topo.mesh(topojson, topojson.objects['world-low']);
-
-    console.log(topojson, features);
 
     const json2 = turf.clone(json);
     console.log(
@@ -46,13 +44,18 @@ export default class D3Test extends Component {
       .attr('height', 800);
 
     const context = canvas.node().getContext('2d');
-
-    // render();
     const path = d3.geoPath().projection(projection).context(context);
 
-    // d3GeoZoom.projection(projection).onMove(render)(canvas.node());
     let render = () => {};
 
+    const scaleExtent = [0.5, 3]; // Your desired scale extent
+    const northUp = true; // Whether to keep north up
+    const noRotation = true;
+
+    // Note: placing this above the zoom behaviour causes inertia to
+    // take over the drag() feature, hence preventing d3.zoom() from
+    // using it
+    // working interia
     const inertia = d3Inertia.geoInertiaDrag(
       canvas,
       function () {
@@ -62,9 +65,23 @@ export default class D3Test extends Component {
       [],
     );
 
-    render = () => {
+    createZoomBehavior(canvas.node(), {
+      projection,
+      scaleExtent,
+      northUp,
+      noRotation,
+      onMove: function (evt) {
+        render(evt);
+      },
+    });
+    render = (transform) => {
       context.clearRect(0, 0, canvas.attr('width'), canvas.attr('height'));
 
+      context.save();
+      if (transform) {
+        context.translate(transform.x, transform.y);
+        context.scale(transform.k, transform.k);
+      }
       context.lineWidth = 0.5;
 
       context.beginPath();
@@ -88,6 +105,7 @@ export default class D3Test extends Component {
       path(features);
       context.stroke();
 
+      context.restore();
       // draw a red line showing current inertia
       if (typeof inertia == 'object') {
         context.beginPath();

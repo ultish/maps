@@ -294,6 +294,9 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
+      versor:
+        specifier: ^0.2.0
+        version: 0.2.0
       webpack:
         specifier: ^5.91.0
         version: 5.91.0
@@ -7503,6 +7506,10 @@ packages:
 
   versor@0.1.2:
     resolution: {integrity: sha512-/XNJOGXeis3j7OOOkdTp3LXzWDTxo/33wvYNtXLLbNOZ5lkTgESzTMPeThU6albr14UupCottC6KTXjcGDO0Lg==}
+
+  versor@0.2.0:
+    resolution: {integrity: sha512-2UJ32VNh+lMUP9RlLoneEdrnupW3eIM9TGdTuaa+HSUqKACt9Vvw+xoGFGdd0YsUnGidTNyuxdhQRhJVpDAvqw==}
+    engines: {node: '>=12'}
 
   walk-sync@0.2.7:
     resolution: {integrity: sha512-OH8GdRMowEFr0XSHQeX5fGweO6zSVHo7bG/0yJQx6LAj9Oukz0C8heI3/FYectT66gY0IPGe89kOvU410/UNpg==}
@@ -17710,6 +17717,8 @@ snapshots:
   vary@1.1.2: {}
 
   versor@0.1.2: {}
+
+  versor@0.2.0: {}
 
   walk-sync@0.2.7:
     dependencies:

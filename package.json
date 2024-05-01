@@ -114,6 +114,7 @@
     "topojson": "^3.0.2",
     "tracked-built-ins": "^3.3.0",
     "typescript": "^5.4.5",
+    "versor": "^0.2.0",
     "webpack": "^5.91.0"
   },
   "engines": {
