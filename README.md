@@ -3,6 +3,8 @@ This repo tests Leaflet, Openlayers, and maybe D3 for rendering geojson. How doe
 
 ## D3
 ### No GeoJson parsing
+<img width="1310" alt="image" src="https://github.com/ultish/maps/assets/3677031/003c69af-6ea5-494a-8495-c7c9ab9718d7">
+
 <img width="942" alt="image" src="https://github.com/ultish/maps/assets/3677031/d4a900a3-dfe6-461e-9f68-1602857c1ab0">
 D3 doesn't need any parsing :) 
 
