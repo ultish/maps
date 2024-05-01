@@ -162,6 +162,9 @@ importers:
       d3:
         specifier: ^7.9.0
         version: 7.9.0
+      d3-geo-projection:
+        specifier: ^4.0.0
+        version: 4.0.0
       d3-inertia:
         specifier: ^0.4.0
         version: 0.4.0
@@ -282,12 +285,18 @@ importers:
       stylelint-prettier:
         specifier: ^4.1.0
         version: 4.1.0(prettier@3.2.5)(stylelint@15.11.0(typescript@5.4.5))
+      topojson:
+        specifier: ^3.0.2
+        version: 3.0.2
       tracked-built-ins:
         specifier: ^3.3.0
         version: 3.3.0
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
+      versor:
+        specifier: ^0.2.0
+        version: 0.2.0
       webpack:
         specifier: ^5.91.0
         version: 5.91.0
@@ -3695,6 +3704,11 @@ packages:
   d3-format@3.1.0:
     resolution: {integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==}
     engines: {node: '>=12'}
+
+  d3-geo-projection@4.0.0:
+    resolution: {integrity: sha512-p0bK60CEzph1iqmnxut7d/1kyTmm3UWtPlwdkM31AU+LW+BXazd5zJdoCn7VFxNCHXRngPHRnsNn5uGjLRGndg==}
+    engines: {node: '>=12'}
+    hasBin: true
 
   d3-geo@1.7.1:
     resolution: {integrity: sha512-O4AempWAr+P5qbk2bC2FuN/sDW4z+dN2wDf9QV3bxQt4M5HfOEeXLgJ/UKQW0+o1Dj8BE+L5kiDbdWUMjsmQpw==}
@@ -7263,12 +7277,29 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
 
+  topojson-client@3.0.0:
+    resolution: {integrity: sha512-2phZ98wg/iKvsWxbB6JQcq0/N0f+sRx8ZogdvjCg+CjaJdmV0knP0OQwK5XbgnytAPx5lPZk41kiWpgH2w9FHg==}
+    hasBin: true
+
   topojson-client@3.1.0:
     resolution: {integrity: sha512-605uxS6bcYxGXw9qi62XyrV6Q3xwbndjachmNxu8HWTtVPxZfEJN9fd/SZS1Q54Sn2y0TMyMxFj/cJINqGHrKw==}
     hasBin: true
 
+  topojson-server@3.0.0:
+    resolution: {integrity: sha512-UhhwQk4e2+lwhAVYkja3J5nQHQmKwORDuIQPkMnFFZFcLqWKLQWI3u7fZWtNIXTElBjTYdBUL1kzi1+oS/qDQw==}
+    hasBin: true
+
   topojson-server@3.0.1:
     resolution: {integrity: sha512-/VS9j/ffKr2XAOjlZ9CgyyeLmgJ9dMwq6Y0YEON8O7p/tGGk+dCWnrE03zEdu7i4L7YsFZLEPZPzCvcB7lEEXw==}
+    hasBin: true
+
+  topojson-simplify@3.0.2:
+    resolution: {integrity: sha512-gyYSVRt4jO/0RJXKZQPzTDQRWV+D/nOfiljNUv0HBXslFLtq3yxRHrl7jbrjdbda5Ytdr7M8BZUI4OxU7tnbRQ==}
+    hasBin: true
+
+  topojson@3.0.2:
+    resolution: {integrity: sha512-u3zeuL6WEVL0dmsRn7uHZKc4Ao4gpW3sORUv+N3ezLTvY3JdCuyg0hvpWiIfFw8p/JwVN++SvAsFgcFEeR15rQ==}
+    deprecated: Use topojson-client, topojson-server or topojson-simplify directly.
     hasBin: true
 
   tr46@0.0.3:
@@ -7475,6 +7506,10 @@ packages:
 
   versor@0.1.2:
     resolution: {integrity: sha512-/XNJOGXeis3j7OOOkdTp3LXzWDTxo/33wvYNtXLLbNOZ5lkTgESzTMPeThU6albr14UupCottC6KTXjcGDO0Lg==}
+
+  versor@0.2.0:
+    resolution: {integrity: sha512-2UJ32VNh+lMUP9RlLoneEdrnupW3eIM9TGdTuaa+HSUqKACt9Vvw+xoGFGdd0YsUnGidTNyuxdhQRhJVpDAvqw==}
+    engines: {node: '>=12'}
 
   walk-sync@0.2.7:
     resolution: {integrity: sha512-OH8GdRMowEFr0XSHQeX5fGweO6zSVHo7bG/0yJQx6LAj9Oukz0C8heI3/FYectT66gY0IPGe89kOvU410/UNpg==}
@@ -12790,6 +12825,12 @@ snapshots:
 
   d3-format@3.1.0: {}
 
+  d3-geo-projection@4.0.0:
+    dependencies:
+      commander: 7.2.0
+      d3-array: 3.2.4
+      d3-geo: 3.1.1
+
   d3-geo@1.7.1:
     dependencies:
       d3-array: 1.2.4
@@ -17448,13 +17489,32 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
+  topojson-client@3.0.0:
+    dependencies:
+      commander: 2.20.3
+
   topojson-client@3.1.0:
+    dependencies:
+      commander: 2.20.3
+
+  topojson-server@3.0.0:
     dependencies:
       commander: 2.20.3
 
   topojson-server@3.0.1:
     dependencies:
       commander: 2.20.3
+
+  topojson-simplify@3.0.2:
+    dependencies:
+      commander: 2.20.3
+      topojson-client: 3.1.0
+
+  topojson@3.0.2:
+    dependencies:
+      topojson-client: 3.0.0
+      topojson-server: 3.0.0
+      topojson-simplify: 3.0.2
 
   tr46@0.0.3: {}
 
@@ -17657,6 +17717,8 @@ snapshots:
   vary@1.1.2: {}
 
   versor@0.1.2: {}
+
+  versor@0.2.0: {}
 
   walk-sync@0.2.7:
     dependencies:

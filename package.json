@@ -70,6 +70,7 @@
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.2.2",
     "d3": "^7.9.0",
+    "d3-geo-projection": "^4.0.0",
     "d3-inertia": "^0.4.0",
     "ember-auto-import": "^2.7.2",
     "ember-cli": "~5.8.0",
@@ -110,8 +111,10 @@
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-prettier": "^4.1.0",
+    "topojson": "^3.0.2",
     "tracked-built-ins": "^3.3.0",
     "typescript": "^5.4.5",
+    "versor": "^0.2.0",
     "webpack": "^5.91.0"
   },
   "engines": {
