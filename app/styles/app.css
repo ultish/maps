@@ -8,3 +8,12 @@
 #charts {
   height: 50vh;
 }
+
+#d3 {
+  height: calc(100vh - 100px);
+  width: calc(100vw - 50px);
+
+  canvas {
+    background-color: aquamarine;
+  }
+}

@@ -11,6 +11,7 @@ export function geoInertiaDragHelper(opt) {
     v10, // Mouse position in Cartesian coordinates just before end of drag gesture.
     v11, // Mouse position in Cartesian coordinates at end.
     q10; // Projection rotation as versor at end.
+
   var inertia = inertiaHelper({
     start: function () {
       v0 = versor.cartesian(projection.invert(inertia.position));
