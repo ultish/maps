@@ -211,7 +211,6 @@ export default class D3Test extends Component {
           @size='small'
           {{on 'click' this.refreshSize}}
         />
-        <Test />
       </p>
     </div>
   </template>

@@ -1,6 +1,8 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
 
-@import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css");
+// @import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css");
+// for product applications (Ember apps)
+@import "@hashicorp/design-system-tokens/dist/products/css/tokens.css";
 
 *,
 *::before,
