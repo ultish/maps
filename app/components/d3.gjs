@@ -2,18 +2,27 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { didInsert } from './ol';
 import d3 from 'd3';
-// import d3this.inertia from 'd3-this.inertia';
+import d3inertia from 'd3-inertia';
 
-import { geoInertiaDrag } from './d3-inertia';
+// import { geoInertiaDrag } from './d3-inertia';
 import turf from '@turf/turf';
 import * as topo from 'topojson';
 import createZoomBehavior from './d3-geo-zoom';
 import { tracked } from '@glimmer/tracking';
 import { on } from '@ember/modifier';
 
+import HdsButton from '@hashicorp/design-system-components/components/hds/button';
+
+import Test from './test';
 export default class D3Test extends Component {
   @tracked width = 0;
   @tracked height = 0;
+
+  @tracked w = 0;
+  @tracked h = 0;
+  @tracked tX = 0;
+  @tracked tY = 0;
+  @tracked scale = 0;
 
   canvas;
   projection;
@@ -30,9 +39,17 @@ export default class D3Test extends Component {
     this.width = box.width;
     this.height = box.height;
 
-    this.projection.translate()[0] = this.width / 2;
-    this.projection.translate()[1] = this.height / 2;
-    this.projection.scale(Math.min(this.width, this.height) / 2);
+    this.w = this.width;
+    this.h = this.height;
+
+    this.tX = this.width / 2;
+    this.tY = this.height / 2;
+
+    this.scale = Math.min(this.width, this.height) / 2;
+
+    this.projection.translate([this.tX, this.tY]);
+
+    this.projection.scale(this.scale);
 
     d3.select('#d3 canvas')
       .attr('width', this.width)
@@ -40,7 +57,6 @@ export default class D3Test extends Component {
 
     this.render();
   }
-
   @action
   async inserted(element) {
     const box = element.getBoundingClientRect();
@@ -56,8 +72,6 @@ export default class D3Test extends Component {
       .geoOrthographic()
       .translate([width / 2, height / 2]) // centers the globe
       .scale(Math.min(width, height) / 2); // sets a good initial size
-
-    // this.refreshSize(element);
 
     const json = await d3.json('/world-low.geojson');
     const topojson = await d3.json('/world-low.topojson');
@@ -79,14 +93,21 @@ export default class D3Test extends Component {
     this.path = d3.geoPath().projection(this.projection).context(this.context);
 
     const scaleExtent = [1, 5]; // Your desired scale extent, min, max
-    const northUp = true; // Whether to keep north up
+    const northUp = false; // Whether to keep north up
     const noRotation = true;
 
+    this.canvas.call(
+      d3.drag().subject(this.dragSubject),
+      // .on('start', dragstarted)
+      // .on('drag', dragged)
+      // .on('end', dragended)
+      // .on('start.render drag.render end.render', render),
+    );
     // Note: placing this above the zoom behaviour causes this.inertia to
     // take over the drag() feature, hence preventing d3.zoom() from
     // using it
     // working interia
-    this.inertia = geoInertiaDrag(
+    this.inertia = d3inertia.geoInertiaDrag(
       this.canvas,
       () => {
         this.render.call(this);
@@ -116,7 +137,7 @@ export default class D3Test extends Component {
       this.canvas.attr('height'),
     );
 
-    // this.context.save();
+    this.context.save();
     // if (transform) {
     //   this.context.translate(transform.x, transform.y);
     //   this.context.scale(transform.k, transform.k);
@@ -145,8 +166,6 @@ export default class D3Test extends Component {
     this.path(this.json2);
     this.context.stroke();
 
-    // this.context.restore();
-
     // draw a red line showing current this.inertia
     if (typeof this.inertia == 'object') {
       this.context.beginPath();
@@ -161,25 +180,37 @@ export default class D3Test extends Component {
           (this.inertia.velocity[1] * this.inertia.t) / 10,
       );
       this.context.lineWidth = 2;
-      this.context.strokeStyle = '#00eeb0';
+      this.context.strokeStyle = 'red';
       this.context.stroke();
       this.context.lineWidth = 0.5;
     }
-
     var p = this.projection.rotate().map((d) => Math.floor(10 * d) / 10);
     this.context.fillText(`λ = ${p[0]}, φ = ${p[1]}, γ = ${p[2]}`, 10, 10);
+
+    this.context.restore();
   }
 
-  get scale() {
-    return Math.min(this.width, this.height) / 2;
-  }
+  dragSubject() {}
 
   <template>
     <div id='d3' {{didInsert onInsert=this.inserted}}>
       <h1>D3</h1>
-      <p>width: {{this.width}} height: {{this.height}} scale: {{this.scale}}</p>
+      <p>width:
+        {{this.w}}
+        height:
+        {{this.h}}
+        translate: [{{this.tX}},
+        {{this.tY}}] scale:
+        {{this.scale}}</p>
       <p>
         <button {{on 'click' this.refreshSize}}>Refresh</button>
+        {{! <Hds::Button @text='Basic button' /> }}
+        <HdsButton
+          @text='bas'
+          @icon='sync'
+          @size='small'
+          {{on 'click' this.refreshSize}}
+        />
       </p>
     </div>
   </template>

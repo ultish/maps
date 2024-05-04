@@ -1,5 +1,15 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
 
+// @import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css");
+// for product applications (Ember apps)
+@import "@hashicorp/design-system-tokens/dist/products/css/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 #leaflet-map,
 #ol-map {
   height: calc(100vh - 50px);
@@ -10,8 +20,8 @@
 }
 
 #d3 {
-  height: calc(100vh - 100px);
-  width: calc(100vw - 50px);
+  height: calc(100vh - 200px);
+  width: calc(100vw - 16px);
 
   canvas {
     background-color: aquamarine;
