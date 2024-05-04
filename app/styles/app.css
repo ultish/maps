@@ -10,8 +10,8 @@
 }
 
 #d3 {
-  height: calc(100vh - 100px);
-  width: calc(100vw - 50px);
+  height: calc(100vh - 200px);
+  width: calc(100vw - 16px);
 
   canvas {
     background-color: aquamarine;
