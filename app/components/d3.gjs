@@ -11,6 +11,9 @@ import createZoomBehavior from './d3-geo-zoom';
 import { tracked } from '@glimmer/tracking';
 import { on } from '@ember/modifier';
 
+import HdsButton from '@hashicorp/design-system-components/components/hds/button';
+
+import Test from './test';
 export default class D3Test extends Component {
   @tracked width = 0;
   @tracked height = 0;
@@ -93,6 +96,13 @@ export default class D3Test extends Component {
     const northUp = false; // Whether to keep north up
     const noRotation = true;
 
+    this.canvas.call(
+      d3.drag().subject(this.dragSubject),
+      // .on('start', dragstarted)
+      // .on('drag', dragged)
+      // .on('end', dragended)
+      // .on('start.render drag.render end.render', render),
+    );
     // Note: placing this above the zoom behaviour causes this.inertia to
     // take over the drag() feature, hence preventing d3.zoom() from
     // using it
@@ -180,6 +190,8 @@ export default class D3Test extends Component {
     this.context.restore();
   }
 
+  dragSubject() {}
+
   <template>
     <div id='d3' {{didInsert onInsert=this.inserted}}>
       <h1>D3</h1>
@@ -192,6 +204,14 @@ export default class D3Test extends Component {
         {{this.scale}}</p>
       <p>
         <button {{on 'click' this.refreshSize}}>Refresh</button>
+        {{! <Hds::Button @text='Basic button' /> }}
+        <HdsButton
+          @text='bas'
+          @icon='sync'
+          @size='small'
+          {{on 'click' this.refreshSize}}
+        />
+        <Test />
       </p>
     </div>
   </template>

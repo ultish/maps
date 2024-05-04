@@ -35,6 +35,7 @@ module.exports = {
       ],
       rules: {
         'no-loss-of-precision': 'off',
+        'no-undef': 'off',
       },
     },
     {
