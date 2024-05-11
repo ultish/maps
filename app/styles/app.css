@@ -26,7 +26,7 @@
   width: calc(100vw - 16px);
 
   canvas {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
   }
 }
 
