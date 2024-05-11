@@ -33,8 +33,12 @@ export default class D3Test extends Component {
   path;
   inertia;
   json2;
+  prevActiveNode;
+
+  theData = new Map();
 
   colourToNode = {};
+  nodeToColor = {};
 
   @action
   refreshSize() {
@@ -100,10 +104,25 @@ export default class D3Test extends Component {
     this.features = topo.mesh(topojson, topojson.objects['world-low']);
 
     this.json2 = turf.clone(json);
-    console.log(
-      json,
-      turf.simplify(this.json2, { tolerance: 0.1, highQuality: false }),
-    );
+    // console.log(json);
+    // console.log(
+    //   json,
+    //   turf.simplify(this.json2, { tolerance: 1, highQuality: false }),
+    // );
+
+    // this.json2 = turf.simplify(this.json2, {
+    //   tolerance: 0.1,
+    //   highQuality: false,
+    // });
+
+    // turf.simplify(this.json2, {
+    //   tolerance: 0.1,
+    //   highQuality: true,
+    //   mutate: true,
+    // });
+    // console.log(this.json2, json);
+
+    this.databind(this.json2);
 
     this.canvas = d3
       .select(element)
@@ -124,6 +143,9 @@ export default class D3Test extends Component {
       .attr('class', 'tooltip')
       .style('opacity', 0);
 
+    // var customBase = document.createElement('custom');
+    // var custom = d3.select(customBase);
+
     this.path = d3.geoPath().projection(this.projection);
     //.context(this.context);
 
@@ -134,18 +156,10 @@ export default class D3Test extends Component {
     const northUp = false; // Whether to keep north up
     const noRotation = true;
 
-    // this.canvas.call(
-    //   d3.drag().subject(this.dragSubject),
-    //   // .on('start', dragstarted)
-    //   // .on('drag', dragged)
-    //   // .on('end', dragended)
-    //   // .on('start.render drag.render end.render', render),
-    // );
     // Note: placing this above the zoom behaviour causes this.inertia to
     // take over the drag() feature, hence preventing d3.zoom() from
     // using it
     // working interia
-
     this.inertia = /*d3inertia.*/ geoInertiaDrag(
       this.canvas,
       () => {
@@ -165,13 +179,15 @@ export default class D3Test extends Component {
       },
     });
 
-    // this.render();
     this.draw();
 
     // Handle mousemove events for picking
     this.canvas.on('mousemove', (event) => {
       const mouseX = event.offsetX;
       const mouseY = event.offsetY;
+
+      // render on move so we can highlight a country
+      this.draw();
 
       const pixelData = this.hiddenContext.getImageData(
         mouseX,
@@ -182,48 +198,69 @@ export default class D3Test extends Component {
       var colKey =
         'rgb(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ')';
 
-      const geoFeature = this.colourToNode[colKey];
+      const node = this.colourToNode[colKey];
 
-      if (geoFeature) {
-        // const feature = this.json2.features[index];
-        const properties = geoFeature.properties;
+      if (node) {
+        if (this.prevActiveNode) {
+          this.prevActiveNode.active = false;
+        }
+        this.prevActiveNode = node;
+        node.active = true;
+        const properties = node.geojson.properties;
 
         // Customize tooltip content based on GeoJSON properties
         tooltip.transition().duration(0).style('opacity', 0.9);
         tooltip
-          .html(
-            `Name: ${properties.name}<br>Other property: ${properties.otherProperty}`,
-          )
+          .html(`Name: ${properties.name}<br>Population: ${properties.pop_est}`)
           .style('left', `${mouseX + 5}px`)
           .style('top', `${mouseY + 20}px`);
       } else {
+        if (this.prevActiveNode) {
+          this.prevActiveNode.active = false;
+        }
         tooltip.transition().duration(0).style('opacity', 0);
       }
     });
   }
 
-  /**
-   * TODO you can do a databind to the canvas in-memory and using that data you can then render elements.
-   * This saves you generating colours for the hiddencanvas each time we draw
-   */
+  databind(data) {
+    // let colorScale = d3
+    //   .scaleSequential(d3.interpolateBlues)
+    //   .domain([0, d3.max(data.features, (d) => d.properties.pop_est)]);
+
+    let colorScale = d3
+      .scaleLog()
+      .domain([
+        d3.min(data.features, (d) => d.properties.pop_est),
+        d3.max(data.features, (d) => d.properties.pop_est),
+      ]) // Adjust domain according to your data
+      .range(['#f7fbff', '#08306b']); // Adjust color range as desired
+
+    data.features.forEach((f) => {
+      const hash = this.hashCode(JSON.stringify(f));
+
+      let fillColour = colorScale(f.properties.pop_est);
+      const node = new Node(hash, f, this.genColor(), fillColour);
+      this.theData.set(hash, node);
+      this.colourToNode[node.colour] = node;
+    });
+  }
+
   draw() {
-    // if (hidden) {
     this.hiddenContext.clearRect(
       0,
       0,
       this.hiddenCanvas.attr('width'),
       this.hiddenCanvas.attr('height'),
     );
-    this.json2.features.forEach((feature) => {
-      // colourToNode
-      const color = this.genColor();
-      this.colourToNode[color] = feature;
-      this.hiddenContext.fillStyle = color;
+
+    this.theData.forEach((node) => {
+      this.hiddenContext.fillStyle = node.colour;
       this.hiddenContext.beginPath();
-      this.path.context(this.hiddenContext)(feature);
+      this.path.context(this.hiddenContext)(node.geojson);
       this.hiddenContext.fill();
     });
-    // } else {
+
     this.context.clearRect(
       0,
       0,
@@ -236,8 +273,8 @@ export default class D3Test extends Component {
 
     this.context.beginPath();
     this.path.context(this.context)({ type: 'Sphere' });
-    this.context.fillStyle = '#233ae8';
-    this.context.fill();
+    this.context.fillStyle = 'rgba(0, 0, 200, 0.1)';
+    this.context.stroke();
 
     let graticuleGenerator = d3.geoGraticule();
 
@@ -248,90 +285,27 @@ export default class D3Test extends Component {
 
     this.context.strokeStyle = 'white';
     this.context.lineWidth = 0.5;
-    // this.context.beginPath();
-    // when using topojson.features
-    // path({ type: 'FeatureCollection', features: features });
-    // when using topojson.mesh
-    // this.path(this.features);
 
-    // this.path.context(this.context)(this.json2);
-    this.json2.features.forEach((feature, i) => {
-      this.context.fillStyle = d3.rgb(0, i, 0).toString();
+    this.theData.forEach((node) => {
+      this.context.fillStyle = node.active ? 'red' : node.fillColour;
       this.context.beginPath();
-      this.path.context(this.context)(feature);
+      this.path.context(this.context)(node.geojson);
       this.context.fill();
     });
-    // this.context.stroke();
 
-    var p = this.projection.rotate().map((d) => Math.floor(10 * d) / 10);
-    this.context.fillText(`λ = ${p[0]}, φ = ${p[1]}, γ = ${p[2]}`, 10, 10);
-
-    this.context.restore();
-    // }
-  }
-
-  render(canvas, hidden) {
-    this.context.clearRect(
-      0,
-      0,
-      this.canvas.attr('width'),
-      this.canvas.attr('height'),
-    );
-
-    this.context.save();
-    // if (transform) {
-    //   this.context.translate(transform.x, transform.y);
-    //   this.context.scale(transform.k, transform.k);
-    // }
-    this.context.lineWidth = 0.5;
-
-    this.context.beginPath();
-    this.path({ type: 'Sphere' });
-    this.context.fillStyle = '#233ae8';
-    this.context.fill();
-
-    let graticuleGenerator = d3.geoGraticule();
-
-    this.context.beginPath();
-    this.context.strokeStyle = '#040f5f';
-    this.path.context(this.context)(graticuleGenerator());
-    this.context.stroke();
-
-    this.context.strokeStyle = 'white';
-    this.context.lineWidth = 0.5;
-    this.context.beginPath();
-    // when using topojson.features
-    // path({ type: 'FeatureCollection', features: features });
-    // when using topojson.mesh
-    // this.path(this.features);
-    this.path.context(this.context)(this.json2);
-    this.context.stroke();
-
-    // draw a red line showing current this.inertia
-    // if (typeof this.inertia == 'object') {
-    //   this.context.beginPath();
-    //   this.context.moveTo(
-    //     this.inertia.position[0] + this.inertia.velocity[0] / 10,
-    //     this.inertia.position[1] + this.inertia.velocity[1] / 10,
-    //   );
-    //   this.context.lineTo(
-    //     this.inertia.position[0] +
-    //       (this.inertia.velocity[0] * this.inertia.t) / 10,
-    //     this.inertia.position[1] +
-    //       (this.inertia.velocity[1] * this.inertia.t) / 10,
-    //   );
-    //   this.context.lineWidth = 2;
-    //   this.context.strokeStyle = 'red';
-    //   this.context.stroke();
-    //   this.context.lineWidth = 0.5;
-    // }
     var p = this.projection.rotate().map((d) => Math.floor(10 * d) / 10);
     this.context.fillText(`λ = ${p[0]}, φ = ${p[1]}, γ = ${p[2]}`, 10, 10);
 
     this.context.restore();
   }
 
-  dragSubject() {}
+  // do i even need this?? why store map? lol
+  hashCode(s) {
+    return s.split('').reduce(function (a, b) {
+      a = (a << 5) - a + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+  }
 
   <template>
     <h1>D3</h1>
@@ -356,4 +330,20 @@ export default class D3Test extends Component {
 
     </div>
   </template>
+}
+
+class Node {
+  id;
+  geojson;
+  fillColour;
+  colour;
+  active;
+
+  constructor(id, geojson, colour, fillColour) {
+    this.id = id;
+    this.geojson = geojson;
+    this.colour = colour;
+    this.fillColour = fillColour;
+    this.active = false;
+  }
 }
