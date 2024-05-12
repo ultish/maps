@@ -11,4 +11,5 @@ Router.map(function () {
   this.route('ol');
   this.route('d3');
   this.route('charts');
+  this.route('gemini');
 });
