@@ -96,6 +96,7 @@ export default class D3Test extends Component {
 
     this.projection = d3
       .geoOrthographic()
+      .clipAngle(90)
       .translate([width / 2, height / 2]) // centers the globe
       .scale(Math.min(width, height) / 2); // sets a good initial size
 
@@ -236,6 +237,11 @@ export default class D3Test extends Component {
       ]) // Adjust domain according to your data
       .range(['#f7fbff', '#08306b']); // Adjust color range as desired
 
+    // colorScale = d3.scaleSequential(
+    //   d3.extent(data.features.map((f) => f.properties.pop_est).sort()),
+    //   d3.interpolateYlGnBu,
+    // );
+
     data.features.forEach((f) => {
       const hash = this.hashCode(JSON.stringify(f));
 
@@ -317,7 +323,7 @@ export default class D3Test extends Component {
       {{this.tY}}] scale:
       {{this.scale}}</p>
     <p>
-      <button {{on 'click' this.refreshSize}}>Refresh</button>
+      <button type='button' {{on 'click' this.refreshSize}}>Refresh</button>
       {{! <Hds::Button @text='Basic button' /> }}
       <HdsButton
         @text='bas'
