@@ -15,7 +15,7 @@ export default class Gemini extends Component {
     const width = 960;
     const height = 500;
     const sensitivity = 75;
-    const autoRotateDelay = 5000; // 5 seconds
+    const autoRotateDelay = 30000; // 5 seconds
 
     let worldLow,
       worldHigh,
@@ -152,8 +152,10 @@ export default class Gemini extends Component {
       setTimeout(startAutoRotate, autoRotateDelay); // Start auto-rotate after the delay
       render(worldHigh);
     }
-
     let wheeling = null;
+    const minScale = 200;
+    const maxScale = 800;
+
     function zoomed(event) {
       if (wheeling) {
         clearTimeout(wheeling);
@@ -165,15 +167,15 @@ export default class Gemini extends Component {
       const scaleFactor = 1.1; // Adjust this value to control zoom speed
 
       if (event.deltaY < 0) {
-        projection.scale(projection.scale() * scaleFactor);
+        projection.scale(Math.min(projection.scale() * scaleFactor, maxScale));
       } else {
-        projection.scale(projection.scale() / scaleFactor);
+        projection.scale(Math.max(projection.scale() / scaleFactor, minScale));
       }
-      render(worldLow);
+      render(worldLow); // Assuming you're using this for a lower-resolution render during zooming
       wheeling = setTimeout(() => {
         dragging = false;
         startAutoRotate();
-        render(worldHigh);
+        render(worldHigh); // Assuming you're using this for the high-resolution render
       }, 250);
     }
 
