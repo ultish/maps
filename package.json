@@ -134,6 +134,7 @@
     "geojson-antimeridian-cut": "^0.1.0",
     "jsts": "^2.11.1",
     "leaflet": "^1.9.4",
-    "ol": "^9.1.0"
+    "ol": "^9.1.0",
+    "simplify-js": "^1.2.4"
   }
 }
