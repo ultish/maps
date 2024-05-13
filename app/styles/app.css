@@ -11,6 +11,35 @@
   box-sizing: border-box;
 }
 
+/* Light theme by default */
+html {
+  color-scheme: light;
+}
+
+/* Dark theme, activated by user preference or toggle */
+html.dark-theme {
+  color-scheme: dark;
+
+  --background-color: #333;
+  --text-color: #fff;
+  --accent-color: #f0ad4e;
+  --header-color: #46ecbd;
+}
+
+/* Specific color customizations for each theme */
+:root {
+  --background-color: #fff;
+  --text-color: #333;
+  --accent-color: #007bff;
+  --header-color: #0d8655;
+}
+
+/* Rest of your styles... */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 #leaflet-map,
 #ol-map {
   height: calc(100vh - 50px);
@@ -37,4 +66,8 @@
 
 .hiddenCanvas {
   display: none;
+}
+
+h2 {
+  color: blueviolet;
 }

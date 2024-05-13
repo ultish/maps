@@ -314,7 +314,12 @@ export default class D3Test extends Component {
   }
 
   <template>
+    <style>
+      h1 { color: var(--header-color); } h2 { color: blue;}
+    </style>
+
     <h1>D3</h1>
+    <h2>hello</h2>
     <p>width:
       {{this.w}}
       height:
