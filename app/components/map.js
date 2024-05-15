@@ -199,6 +199,7 @@
     radiansToDegrees = 180 / Math.PI; // Constant for converting radians to degrees
 
   // Define the d3.geo.zoom function.
+
   d3.geo.zoom = function () {
     // Function to handle zoom start events.
     function handleZoomStart(event) {
