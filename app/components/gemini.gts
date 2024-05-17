@@ -69,6 +69,7 @@ export default class Gemini extends Component {
     projection = d3
       .geoOrthographic()
       .scale(250)
+      .precision(0.5)
       .translate([width / 2, height / 2])
       .clipAngle(90);
 

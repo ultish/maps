@@ -97,6 +97,7 @@ export default class D3Test extends Component {
     this.projection = d3
       .geoOrthographic()
       .clipAngle(90)
+      .precision(1)
       .translate([width / 2, height / 2]) // centers the globe
       .scale(Math.min(width, height) / 2); // sets a good initial size
 
