@@ -3,7 +3,8 @@
 /* // @import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css"); */
 
 /* // for product applications (Ember apps) */
-@import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css");
+
+/* @import url("@hashicorp/design-system-tokens/dist/products/css/tokens.css"); */
 
 *,
 *::before,
