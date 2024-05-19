@@ -57,32 +57,6 @@ export default class GlobeMapComponent extends Component {
     };
 
     this.drawGlobe();
-
-    // d3.select(e)
-    //   .append('div')
-    //   .selectAll('a')
-    //   .data(this.countryNames)
-    //   .join('a')
-    //   .text((d) => d)
-    //   .on('click', (event, countryName) => {
-    //     const countryFeature = this.geoJsonData.features.find(
-    //       (d) => d.properties.name === countryName,
-    //     );
-    //     if (countryFeature) {
-    //       const centroid = d3.geoCentroid(countryFeature);
-    //       const initialRotation = projection.rotate();
-    //       const targetRotation = [-centroid[0], -centroid[1]];
-
-    //       d3.timer((elapsed) => {
-    //         const t = Math.min(1, elapsed / 1000);
-    //         projection.rotate(
-    //           d3.interpolate(initialRotation, targetRotation)(t),
-    //         );
-    //         drawGlobe();
-    //         return t >= 1;
-    //       });
-    //     }
-    //   });
   }
 
   @action
